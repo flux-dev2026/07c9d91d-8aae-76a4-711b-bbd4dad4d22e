@@ -10,7 +10,7 @@
         `<vertical>
             <appbar>
                 <toolbar id="toolbar" title="V${app.versionName}">
-                    <button id="setting" layout_gravity="right" textSize="14sp" text="设置" color="#ffffff" bg="#00000000" />
+                    <button id="setting" layout_gravity="right" textSize="14sp" text="setting" color="#ffffff" bg="#00000000" />
                 </toolbar>
             </appbar>
             <horizontal gravity="center" ayout_weight="1">
@@ -21,7 +21,7 @@
     activity.setSupportActionBar(ui.toolbar);
     ui.setting.on('click', () => {
         let txt = storage.get('upfatefile', '')
-        dialogs.rawInput("更新地址设置", txt, (upfatefile) => {
+        dialogs.rawInput("", txt, (upfatefile) => {
             try {
                 if (upfatefile) {
                     storage.put('upfatefile', upfatefile)
@@ -44,7 +44,6 @@
                 eval(code);
             }
         } catch (ex) {
-            toast("脚本加载异常（脚本错误）")
             console.error($debug.getStackTrace(ex));
         }
     }
@@ -59,7 +58,7 @@
                     timeout: 10000
                 }, (res, err) => {
                     if (err) {
-                        toast("脚本加载异常（请检查网络）")
+                       console.error($debug.getStackTrace(err));
                     }
                     else if (res.statusCode == 200) {
                         const code = res.body.string()
@@ -68,12 +67,11 @@
                             loadUI()
                         })
                     } else {
-                        toast("脚本加载异常（请检查网络）")
+
                     }
                 });
             }
         } catch (ex) {
-            toast("脚本加载异常（请检查网络）")
             console.error($debug.getStackTrace(ex));
         }
     }
@@ -82,7 +80,6 @@
         RemoteLoad()
     } else {
         function activity_result(requestCode, resultCode, data) {
-            // log(requestCode, resultCode, data)
             if (requestCode === 0) {
                 if (resultCode === activity.RESULT_OK) {
                     RemoteLoad()
